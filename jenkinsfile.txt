@@ -2,7 +2,6 @@
 pipeline {
     agent any
 
-   
     stages {
 
         stage('Checkout') {
@@ -12,22 +11,38 @@ pipeline {
         }
 
         stage('Build') {
-            steps {  
+            steps {
+                echo 'Building the project'
                 bat 'mvn clean compile'
             }
         }
 
         stage('Test') {
             steps {
+                echo 'Running test cases'
                 bat 'mvn test'
             }
         }
 
         stage('Package') {
             steps {
+                echo 'Packaging the project'
                 bat 'mvn package'
             }
         }
     }
 
-   
+    post {
+        success {
+            echo 'Pipeline executed successfully!'
+        }
+
+        failure {
+            echo 'Pipeline execution failed!'
+        }
+
+        always {
+            echo 'Pipeline execution completed.'
+        }
+    }
+}
